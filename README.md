@@ -13,7 +13,7 @@ https://stormy-plum-walrus.cyclic.app/user/register
 
 2)for user login
 https://stormy-plum-walrus.cyclic.app/user/login
-{name,email}
+{email,password}
 
 3) after selecting a question for generating question
 https://stormy-plum-walrus.cyclic.app/user/generate-questions
