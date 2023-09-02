@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition and OpenAI Integration</title>
+    <style>
+        #speechContainer {
+            display: flex;
+            align-items: center;
+        }
+
+        #micButton {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .mic-on {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="speechContainer">
+        <button id="micButton" class="mic-off">
+            <img src="mic-off.png" alt="Microphone Off">
+        </button>
+        <label for="prompt">Enter Prompt:</label>
+        <input type="text" id="userInput" placeholder="Type or speak...">
+        <button id="submitButton">Submit</button>
+    </div>
+    <div id="output"></div>
+   
+</body>
+<script>
+   const micButton = document.getElementById('micButton');
+    const userInput = document.getElementById('userInput');
+    const submitButton = document.getElementById('submitButton');
+    let isMicOn = false;
+    let transcript = ''; // Store the accumulated transcript
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = event => {
+      const interimTranscript = event.results[event.results.length - 1][0].transcript;
+
+      if (event.results[event.results.length - 1].isFinal) {
+        transcript += interimTranscript + ' '; // Append to the transcript
+        userInput.value = transcript;
+        console.log('Transcript updated:', transcript); // Debugging
+      }
+    };
+
+    micButton.addEventListener('click', () => {
+      if (!isMicOn) {
+        micButton.classList.add('mic-on');
+        micButton.innerHTML = '<img src="mic-on.png" alt="Microphone On">';
+        recognition.start();
+      } else {
+        micButton.classList.remove('mic-on');
+        micButton.innerHTML = '<img src="mic-off.png" alt="Microphone Off">';
+        recognition.stop();
+      }
+      isMicOn = !isMicOn;
+    });
+
+    submitButton.addEventListener('click', async () => {
+      const userInputText = transcript||userInput.value; // Use the accumulated transcript
+      console.log(userInputText)
+
+      try {
+        const response = await fetch('http://localhost:4500/generate-text', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: userInputText }),
+        });
+
+        const data = await response.json();
+        const generatedText = data.text;
+        document.getElementById('output').innerText = data.text;
+        console.log('Generated Text:', generatedText);
+
+        // Clear the transcript after submission
+        transcript = '';
+
+        // Clear input after submission
+        userInput.value = '';
+
+        // Do something with the generated text
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+
+
+</script>
+</html>
