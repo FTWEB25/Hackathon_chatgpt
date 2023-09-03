@@ -2,22 +2,22 @@
 Interview system with AI
 
 
-Deployed link for backend:-https://stormy-plum-walrus.cyclic.app
+Deployed link for backend:- https://loincloth-lamb.cyclic.app
 
 
 #routes:- 
 1)for user registration
-https://stormy-plum-walrus.cyclic.app/user/register
+https://loincloth-lamb.cyclic.app/user/register
 {name,email,password}
 
 
 2)for user login
-https://stormy-plum-walrus.cyclic.app/user/login
+https://loincloth-lamb.cyclic.app/user/login
 {email,password}
 
 3) after selecting a question for generating question
-https://stormy-plum-walrus.cyclic.app/user/generate-questions
+https://loincloth-lamb.cyclic.app/user/generate-questions
 {prompt:your prompt here}
 
 4)for getting question
-https://stormy-plum-walrus.cyclic.app/ques
+https://loincloth-lamb.cyclic.app/ques
