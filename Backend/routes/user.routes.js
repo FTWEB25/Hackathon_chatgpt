@@ -56,7 +56,7 @@ userRouter.post("/login",async(req,res)=>{
 })
 
 
-userRouter.get('/generate-questions', auth,async (req, res) => {
+userRouter.post('/generate-questions', auth,async (req, res) => {
   const {prompt} = req.body;
   try {
       const fetchModule = await import("node-fetch");
